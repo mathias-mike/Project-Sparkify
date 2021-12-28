@@ -4,3 +4,5 @@ scratch_pad
 spark_cluster.pem
 log-data/
 song_data/
+notebooks/
+
