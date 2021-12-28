@@ -1,3 +1,6 @@
 dwh.cfg
-redshift_user.csv
 .ipynb_checkpoints/
+scratch_pad
+spark_cluster.pem
+log-data/
+song_data/
