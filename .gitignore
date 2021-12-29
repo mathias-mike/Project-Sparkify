@@ -5,4 +5,5 @@ spark_cluster.pem
 log-data/
 song_data/
 notebooks/
+__pycache__/
 
