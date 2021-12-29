@@ -68,8 +68,8 @@ songplay_table_create = ("""
         "start_time" BIGINT NOT NULL SORTKEY,
         "user_id" SMALLINT NOT NULL,
         "level" VARCHAR(5) NOT NULL,
-        "song_id" VARCHAR(20) DISTKEY,
-        "artist_id" VARCHAR(20),
+        "song_id" VARCHAR(20) NOT NULL DISTKEY,
+        "artist_id" VARCHAR(20) NOT NULL,
         "session_id" SMALLINT NOT NULL,
         "location" VARCHAR NOT NULL,
         "user_agent" VARCHAR NOT NULL
@@ -148,7 +148,7 @@ songplay_table_insert = ("""
     SELECT e.ts AS start_time, e.userid AS user_id, e.level AS level, s.song_id AS song_id, 
         s.artist_id AS artist_id, e.sessionid AS session_id, e.location AS location, e.useragent AS user_agent
     FROM staging_events e
-    LEFT JOIN staging_songs s
+    JOIN staging_songs s
     ON e.song = s.title AND e.artist = s.artist_name
     WHERE e.page = 'NextSong'
 """)
