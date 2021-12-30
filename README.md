@@ -15,17 +15,18 @@ The `configure.ipynb` notebook file contains step to configure and launch Redshi
 
 #### Requirements
 * An AWS account 
-* An AWS programmatic user with Amazon[IAM, S3, Redshift, EC2, EMR] permisions
+* An AWS programmatic user with Amazon[IAM, S3, Redshift, EC2, EMR] permissions
 * `Boto3` AWS SDK for python installed on your machine.
 
 ### Create tables on Redshift database
-Once Redshift cluster is launched, you'll need to get the and save the  
+Once Redshift cluster is launched, you'll need to get and save the  
 * IAM role arn
 * Redshift endpoint 
 * Redshift port 
 * Redshift database name
 * database username 
 * and database password
+
 in the `dwh.cfg` file.
 
 Once this is done, fire up the `create_table.py` script to create all necessary table for this project.
@@ -53,7 +54,7 @@ The queries ran for all processes are saved in the `sql_queries.py` file.
  In a bid to eleminate SHUFFLING, This distribution style is choosen for this table which would link to the `songs` table on the `song_id` column because the songs dimension table is quite large and a good number of joins is going to be happening between the two tables. 
  We want both tables to be distributed on the same key.
 
- * All other dimension tables have a `DISTSTYLE ALL` distribution style as the a not as much as the `songs` table and we can afford to replicate data.
+ * All other dimension tables have a `DISTSTYLE ALL` distribution style as they are not as much as the `songs` table and we can afford to replicate data.
 
 ### ETL Queries
 The ETL queries are the `INSERT INTO <table_name>` queries in the `sql_queries.py` file. This queries perform some sql DQL task on the stagging tables to transform them into the needed data for the dimensions tables.
