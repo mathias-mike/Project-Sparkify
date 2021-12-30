@@ -125,36 +125,34 @@ time_table_create = ("""
 
 
 # STAGING TABLES FROM JSON
-# staging_events_copy = ("""
-#     COPY "staging_events" FROM {}
-#     CREDENTIALS 'aws_iam_role={}'
-#     COMPUPDATE OFF REGION 'us-west-2'
-#     JSON {}
-# """).format(log_data, arn, log_json_path)
+staging_events_copy = ("""
+    COPY "staging_events" FROM {}
+    CREDENTIALS 'aws_iam_role={}'
+    COMPUPDATE OFF REGION 'us-west-2'
+    JSON {}
+""").format(log_data, arn, log_json_path)
 
-# staging_songs_copy = ("""
-#     COPY "staging_songs" FROM {}
+staging_songs_copy = ("""
+    COPY "staging_songs" FROM {}
+    CREDENTIALS 'aws_iam_role={}'
+    COMPUPDATE OFF REGION 'us-west-2'
+    JSON 'auto ignorecase'
+""").format(song_data, arn)
+
+# STAGING TABLES FROM SPARK JSON
+# staging_events_copy = ("""
+#     COPY "staging_events" FROM 's3://sparkify-dwh-bucket/log-data-json'
 #     CREDENTIALS 'aws_iam_role={}'
 #     COMPUPDATE OFF REGION 'us-west-2'
 #     JSON 'auto ignorecase'
-# """).format(song_data, arn)
+# """).format(arn)
 
-# STAGING TABLES FROM CSV
-staging_events_copy = ("""
-    COPY "staging_events" (artist,auth,firstname,gender,iteminsession,lastname,length,level,location,method,page,registration,sessionid,song,status,ts,useragent,userid) 
-    FROM 's3://sparkify-dwh-bucket/log-data/'
-    CREDENTIALS 'aws_iam_role={}'
-    COMPUPDATE OFF REGION 'us-west-2'
-    GZIP DELIMITER ',' IGNOREHEADER 1
-""").format(arn)
-
-staging_songs_copy = ("""
-    COPY "staging_songs" (artist_id,artist_latitude,artist_location,artist_longitude,artist_name,duration,num_songs,song_id,title,year)
-    FROM 's3://sparkify-dwh-bucket/song-data/'
-    CREDENTIALS 'aws_iam_role={}'
-    COMPUPDATE OFF REGION 'us-west-2'
-    GZIP DELIMITER ',' IGNOREHEADER 1
-""").format(arn)
+# staging_songs_copy = ("""
+#     COPY "staging_songs" FROM 's3://sparkify-dwh-bucket/song-data-json'
+#     CREDENTIALS 'aws_iam_role={}'
+#     COMPUPDATE OFF REGION 'us-west-2'
+#     JSON 'auto ignorecase'
+# """).format(arn)
 
 
 

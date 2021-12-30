@@ -6,4 +6,5 @@ log-data/
 song_data/
 notebooks/
 __pycache__/
+sparkify_stager
 

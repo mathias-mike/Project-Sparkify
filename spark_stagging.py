@@ -42,7 +42,7 @@ def write_to_s3(dataframe, path):
         S3 path to write data to
     '''
     dataframe.write \
-        .save(path, format='csv', compression='gzip', header=True)
+        .save(path, format='json')
 
 
 def main():
@@ -65,11 +65,11 @@ def main():
 
 
     # Writing log data in compressed form to s3 path
-    log_write_path = 's3://sparkify-dwh-bucket/log-data'
+    log_write_path = 's3://sparkify-dwh-bucket/log-data-json'
     write_to_s3(log_data, log_write_path)
 
     # Writing song data in compressed form to s3 path
-    song_write_path = 's3://sparkify-dwh-bucket/song-data'
+    song_write_path = 's3://sparkify-dwh-bucket/song-data-json'
     write_to_s3(song_data, song_write_path)
 
 if __name__ == "__main__":
