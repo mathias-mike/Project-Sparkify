@@ -15,10 +15,15 @@ def drop_tables(cur, conn):
     conn: psycopg2.extensions.connection
         Connection to a PostgreSQL database instance (In this case, Redshift)
     '''
-
     for query in drop_table_queries:
+
+        table_name = query[query.index('"') + 1 : -1]
+        print('Dropping {} ...'.format(table_name))
+
         cur.execute(query)
         conn.commit()
+
+        print('{} Dropped!\n'.format(table_name))
 
 
 def create_tables(cur, conn):
@@ -34,8 +39,13 @@ def create_tables(cur, conn):
         Connection to a PostgreSQL database instance (In this case, Redshift)
     '''
     for query in create_table_queries:
+        table_name = query[query.index('"') + 1 : query.index('" ')]
+        print('Creating {} ...'.format(table_name))
+
         cur.execute(query)
         conn.commit()
+
+        print('{} created!\n'.format(table_name))
 
 
 def main():

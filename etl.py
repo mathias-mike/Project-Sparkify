@@ -15,8 +15,13 @@ def load_staging_tables(cur, conn):
         Connection to a PostgreSQL database instance (In this case, Redshift)
     '''
     for query in copy_table_queries:
+        table_name = query[query.index('"') + 1 : query.index('" ')]
+        print('Loading {} ...'.format(table_name))
+
         cur.execute(query)
         conn.commit()
+
+        print('{} Loaded!\n'.format(table_name))
 
 
 def insert_tables(cur, conn):
@@ -32,8 +37,13 @@ def insert_tables(cur, conn):
         Connection to a PostgreSQL database instance (In this case, Redshift)
     '''
     for query in insert_table_queries:
+        table_name = query[query.index('"') + 1 : query.index('" ')]
+        print('Inserting into {} ...'.format(table_name))
+
         cur.execute(query)
         conn.commit()
+
+        print('Insertion complete!\n'.format(table_name))
 
 
 def main():

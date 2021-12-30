@@ -27,7 +27,6 @@ def read_from_s3(spark, path):
     Spark DataFrame
         Data loaded into column and row format
     '''
-
     return spark.read.json(path)
 
 
@@ -42,7 +41,6 @@ def write_to_s3(dataframe, path):
     path: str
         S3 path to write data to
     '''
-    
     dataframe.write \
         .save(path, format='csv', compression='gzip', header=True)
 

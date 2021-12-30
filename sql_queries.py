@@ -14,7 +14,7 @@ song_data = config.get('S3', 'SONG_DATA')
 # DROP TABLES
 staging_events_table_drop = 'DROP TABLE IF EXISTS "staging_events"'
 staging_songs_table_drop = 'DROP TABLE IF EXISTS "staging_songs"'
-songplay_table_drop = 'DROP TABLE IF EXISTS "songplay"'
+songplay_table_drop = 'DROP TABLE IF EXISTS "songplays"'
 user_table_drop = 'DROP TABLE IF EXISTS "users"'
 song_table_drop = 'DROP TABLE IF EXISTS "songs"'
 artist_table_drop = 'DROP TABLE IF EXISTS "artists"'
@@ -124,20 +124,37 @@ time_table_create = ("""
 
 
 
-# STAGING TABLES
+# STAGING TABLES FROM JSON
+# staging_events_copy = ("""
+#     COPY "staging_events" FROM {}
+#     CREDENTIALS 'aws_iam_role={}'
+#     COMPUPDATE OFF REGION 'us-west-2'
+#     JSON {}
+# """).format(log_data, arn, log_json_path)
+
+# staging_songs_copy = ("""
+#     COPY "staging_songs" FROM {}
+#     CREDENTIALS 'aws_iam_role={}'
+#     COMPUPDATE OFF REGION 'us-west-2'
+#     JSON 'auto ignorecase'
+# """).format(song_data, arn)
+
+# STAGING TABLES FROM CSV
 staging_events_copy = ("""
-    COPY "staging_events" FROM {}
+    COPY "staging_events" (artist,auth,firstname,gender,iteminsession,lastname,length,level,location,method,page,registration,sessionid,song,status,ts,useragent,userid) 
+    FROM 's3://sparkify-dwh-bucket/log-data/'
     CREDENTIALS 'aws_iam_role={}'
     COMPUPDATE OFF REGION 'us-west-2'
-    JSON {}
-""").format(log_data, arn, log_json_path)
+    GZIP DELIMITER ',' IGNOREHEADER 1
+""").format(arn)
 
 staging_songs_copy = ("""
-    COPY "staging_songs" FROM {}
+    COPY "staging_songs" (artist_id,artist_latitude,artist_location,artist_longitude,artist_name,duration,num_songs,song_id,title,year)
+    FROM 's3://sparkify-dwh-bucket/song-data/'
     CREDENTIALS 'aws_iam_role={}'
     COMPUPDATE OFF REGION 'us-west-2'
-    JSON 'auto ignorecase'
-""").format(song_data, arn)
+    GZIP DELIMITER ',' IGNOREHEADER 1
+""").format(arn)
 
 
 
