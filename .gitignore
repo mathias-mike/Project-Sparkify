@@ -1,10 +1,5 @@
-dwh.cfg
-.ipynb_checkpoints/
+Data\ Lake/dl.cfg
+Data\ Warehouse/dwh.cfg
 scratch_pad
 spark_cluster.pem
-log-data/
-song_data/
-notebooks/
-__pycache__/
-sparkify_stager
 
