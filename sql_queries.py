@@ -130,7 +130,7 @@ staging_events_copy = ("""
     COPY "staging_events" FROM {}
     CREDENTIALS 'aws_iam_role={}'
     COMPUPDATE OFF REGION 'us-west-2'
-    JSON {}
+    JSON {} ACCEPTINVCHARS TIMEFORMAT AS 'epochmillisecs'
 """).format(log_data, arn, log_json_path)
 
 staging_songs_copy = ("""
