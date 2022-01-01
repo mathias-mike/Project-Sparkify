@@ -4,8 +4,7 @@ I am tasked with building a data warehouse for the analytics team, I will basica
 ## Steps 
 1. Configure and launch a Redshift cluster on AWS
 2. Create tables on Redshift database
-3. Configure and launch Spark cluster with AWS EMR
-4. Stage data from S3 to Redshift stagging tables with Spark-Redshift connector
+3. Stage data from S3 into Redshift staging tables
 5. ETL on stagging tables to Star Dimension tables
 
 ### Configure and launch a Redshift cluster on AWS
@@ -16,33 +15,17 @@ The `configure.ipynb` notebook file contains step to configure and launch Redshi
 * An AWS programmatic user with Amazon[IAM, S3, Redshift, EC2, EMR] permissions
 * `Boto3` AWS SDK for python installed on your machine.
 
-### Create tables on Redshift database
-Once Redshift cluster is launched, you'll need to get and save the  
-* IAM role arn
-* Redshift endpoint 
-* Redshift port 
-* Redshift database name
-* database username 
-* and database password
+### Stage data from S3 into Redshift staging tables
+At this stage, we use the COPY command to stage data into Redshift as against the INSERT command (which can also be used but is much slower)
 
-in the `dwh.cfg` file.
+The COPY command leverages the Amazon Redshift massively parallel processing (MPP) architecture to read and load data in parallel from a file or multiple files in an Amazon S3 bucket. 
 
-Once this is done, fire up the `create_table.py` script to create all necessary table for this project.
+You can take maximum advantage of parallel processing by splitting your data into multiple files, in cases where the files are compressed. You can also take maximum advantage of parallel processing by setting distribution keys on your tables
 
-### Configure and launch Spark cluster with AWS EMR
-The datasource file was stored in a rather complex and difficult to read way (files nested within files). This was taking too long for redshift to load using the `COPY` command.
-
-To ease the task, A spark cluster can be used to load the file to Redshift using `spark-redshift` connector. This was the plan, but due to some minor configuration issue with `spark-redshift` connector I improvised. (Definitely an issue to file and will get back on it)
-
-1. Fire up a spark cluster on AWS using AWS EMR
-2. Run the `spark_stagging.py` script that stage the file to an S3 bucket in a better way not nested within files.
-
+You'll find the COPY command in the `sql_queries.py` file.
 
 ### ETL on stagging tables to Star Dimension tables
-Finally, run `etl.py` script to stage data from new S3 path to Redshift staging tables.
-
-The run will also perform ETL on the stagging tables into Star dimensions tables.
-
+Finally, run `etl.py` script. This script actually stages the data from s3 to Redshift, afterwards, it performs ETL on the staged tables tranforming them into Star dimension.
 
 ## Queries
 The queries ran for all processes are saved in the `sql_queries.py` file.
