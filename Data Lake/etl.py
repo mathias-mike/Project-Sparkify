@@ -9,14 +9,17 @@ from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, day
 # Reading config file.
 # 'dl.cfg' contains AWS KEY and ID for authentication
 config = configparser.ConfigParser()
-config.read('dl.cfg')
+config.read_file(open('dl.cfg'))
+# config.read('dl.cfg')
 
 # Setting AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY as environmental variables
 # To authenticate to Amazon Web Services, the SDK first checks for credentials in your environment variables.
 # The SDK uses the getenv() function to look for the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN 
 # environment variables.
-os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
-os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
+# os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
+# os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
+os.environ['AWS_ACCESS_KEY_ID']=config.get('USER', 'AWS_ACCESS_KEY_ID')
+os.environ['AWS_SECRET_ACCESS_KEY']=config.get('USER', 'AWS_SECRET_ACCESS_KEY')
 
 def create_spark_session():
     '''

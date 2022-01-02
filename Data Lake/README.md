@@ -3,12 +3,6 @@ Sparkify is a music streaming startup with an impressive userbase growth _(their
 
 In this project, I am task to build an ETL pipeline for a data lake hosted on S3. This will allow their analytics team to continue finding insights in what songs their users are listening to.
 
-## Step
-1. Configure and launch an AWS EMR clauster.
-2. Get an AWS_ACCESS_KEY_ID and an AWS_SECRET_ACCESS_KEY and add it to a file called `dl.cfg`.
-3. Copy the `dl.cfg` file as well as the `etl.py` script to the EMR instance.
-4. Submit the `etl.py` sript to the spark cluster.
-
 ## Requirements
 * An AWS account 
 * An AWS programmatic user with AmazonS3 permissions
@@ -24,7 +18,7 @@ In this project, I am task to build an ETL pipeline for a data lake hosted on S3
 
 * Also all data are stored in `parquet` files. This an efficient way of storing data as it a columnar store which reads data in less time and minimizes latency.
 
-# dl.cfg 
+## dl.cfg 
 The `dl.cfg` file will contain you user authentication information in form of AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 
 * Create the file `dl.cfg`.
@@ -32,6 +26,20 @@ The `dl.cfg` file will contain you user authentication information in form of AW
 * Get user AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 * Inside empty `dl.cfg` file, save keys as:
     ```
+    [USER]
     AWS_ACCESS_KEY_ID=''
     AWS_SECRET_ACCESS_KEY=''
     ```
+
+## Running python script
+1. Configure and launch an AWS EMR clauster with spark installed.
+2. Open terminal on local mechine and copy files to EMR cluster.
+```
+scp -i myKeyPair.pem <path_to_file>/etl.py hadoop@ec2-3-83-32-211.compute-1.amazonaws.com:~/data/
+
+scp -i myKeyPair.pem <path_to_file>/dl.cfg hadoop@ec2-3-83-32-211.compute-1.amazonaws.com:~/data/
+```
+3. SSH into master EC2 instance - `ssh -i myKeyPair.pem hadoop@ec2-3-83-32-211.compute-1.amazonaws.com`
+4. `sudo pip install configparser` on terminal
+5. `cd data` on terminal
+6. `spark-submit etl.py`
