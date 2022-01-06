@@ -2,4 +2,6 @@ Data\ Lake/dl.cfg
 Data\ Warehouse/dwh.cfg
 scratch_pad
 spark_cluster.pem
+Data\ Warehouse/config.ipynb
+Data\ Warehouse/.ipynb_checkpoints
 
