@@ -78,3 +78,5 @@ Navigate back to the DAG's page, you'll notice 2 DAGs here; **sparkify** and **s
 
 So their **DAG Graph** would be different but they basically do the same thing.
 
+**Turn On** either DAGs to perform the task.
+

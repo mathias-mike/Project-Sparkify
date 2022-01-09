@@ -12,6 +12,7 @@ def get_load_dim_subdag (
     dag = DAG(
         dag_id=f"{parent_dag_name}.{task_id}",
         default_args=default_args,
+        catchup=False,
         schedule_interval='0 * * * *'
     )
 

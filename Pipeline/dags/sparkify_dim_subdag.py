@@ -27,13 +27,13 @@ default_args = {
     'retries': 3,
     'retry_delay': timedelta(minutes=5),
     'email_on_retry': False,
-    'catchup': False,
     'start_date': datetime(2019, 1, 12),
 }
 
 dag = DAG (
     'sparkify_with_subdag',
     default_args=default_args,
+    catchup=False,
     description='Load and transform data in Redshift with Airflow',
     schedule_interval='0 * * * *'
 )
