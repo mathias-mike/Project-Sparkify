@@ -1,7 +1,5 @@
-# Project Sparkify
-Sparkify is a music streaming startup with an impressive userbase growth _(their marketing team must be doing one hell of a job)_ and is looking to move their processes and data to the cloud. Their data resides in S3, in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app.
-
-In this project, I am task to build an ETL pipeline for a data lake hosted on S3. This will allow their analytics team to continue finding insights in what songs their users are listening to.
+# Data Lake
+In this project, I am task to build an ETL pipeline for a data lake hosted on S3. We will be creating a facts and a set of dimensions tables and store them in s3 in an optimized format. This will allow their analytics team to continue finding insights in what songs their users are listening to.
 
 ## Requirements
 * An AWS account 

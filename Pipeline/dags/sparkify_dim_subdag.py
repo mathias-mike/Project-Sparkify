@@ -3,6 +3,7 @@ import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.postgres_operator import PostgresOperator
+from airflow.operators.subdag_operator import SubDagOperator
 
 # Old version
 # from airflow.operators import (
@@ -14,8 +15,8 @@ from airflow.operators.postgres_operator import PostgresOperator
 
 # Version 2
 from operators import *
-
 from helpers import SqlQueries
+from load_dim_subdag import get_load_dim_subdag
 
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
@@ -31,10 +32,10 @@ default_args = {
 }
 
 dag = DAG (
-    'sparkify',
+    'sparkify_with_subdag',
     default_args=default_args,
     description='Load and transform data in Redshift with Airflow',
-    schedule_interval='0 * * * *',
+    schedule_interval='0 * * * *'
 )
 
 start_operator = PostgresOperator (
@@ -72,36 +73,15 @@ load_songplays_table = LoadFactOperator(
     et_query=SqlQueries.songplay_table_insert,
 )
 
-load_user_dimension_table = LoadDimensionOperator(
-    task_id='Load_user_dim_table',
+load_dimension_tables = SubDagOperator(
+    task_id="load_dimension_tables_subdag",
     dag=dag,
-    redshift_conn_id="redshift",
-    table="users",
-    et_query=SqlQueries.user_table_insert
-)
-
-load_song_dimension_table = LoadDimensionOperator(
-    task_id='Load_song_dim_table',
-    dag=dag,
-    redshift_conn_id="redshift",
-    table="songs",
-    et_query=SqlQueries.song_table_insert
-)
-
-load_artist_dimension_table = LoadDimensionOperator(
-    task_id='Load_artist_dim_table',
-    dag=dag,
-    redshift_conn_id="redshift",
-    table="artists",
-    et_query=SqlQueries.artist_table_insert
-)
-
-load_time_dimension_table = LoadDimensionOperator(
-    task_id='Load_time_dim_table',
-    dag=dag,
-    redshift_conn_id="redshift",
-    table="time",
-    et_query=SqlQueries.time_table_insert
+    subdag=get_load_dim_subdag(
+        "sparkify_with_subdag",      
+        "load_dimension_tables_subdag",
+        "redshift",
+        default_args
+    )
 )
 
 run_quality_checks = DataQualityOperator(
@@ -130,15 +110,9 @@ start_operator >> stage_songs_to_redshift
 stage_events_to_redshift >> load_songplays_table
 stage_songs_to_redshift >> load_songplays_table
 
-load_songplays_table >> load_user_dimension_table
-load_songplays_table >> load_song_dimension_table
-load_songplays_table >> load_artist_dimension_table
-load_songplays_table >> load_time_dimension_table
+load_songplays_table >> load_dimension_tables
 
-load_user_dimension_table >> run_quality_checks
-load_song_dimension_table >> run_quality_checks
-load_artist_dimension_table >> run_quality_checks
-load_time_dimension_table >> run_quality_checks
+load_dimension_tables >> run_quality_checks
 
 run_quality_checks >> end_operator
 
