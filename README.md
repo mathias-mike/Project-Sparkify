@@ -13,3 +13,6 @@ Warehouse was hosted in AWS Redshift
 ## Data Lake
 This folder contains my implementation of a data lake solution for Sparkify.
 
+## Pipeline
+This folder contains my implemetation of a data pipeline with Apache Airflow for Sparkify
+
