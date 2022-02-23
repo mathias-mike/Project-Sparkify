@@ -4,4 +4,5 @@ scratch_pad
 spark_cluster.pem
 Data\ Warehouse/config.ipynb
 Data\ Warehouse/.ipynb_checkpoints
-
+Data\ Model\ Postgres/__pycache__
+Data\ Model\ Postgres/.ipynb_checkpoints
