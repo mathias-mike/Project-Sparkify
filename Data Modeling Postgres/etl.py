@@ -6,6 +6,13 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """ Function reads song file, process it and stores it in songs and artist table
+    
+    Args: 
+        cur (psycopg2.cursor): Allows execution of SLQ queries with python.
+        filepath (string): Path of song_file
+    """
+
     # open song file
     df = pd.DataFrame([pd.read_json(filepath, typ='series')])
 
@@ -19,6 +26,13 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """ Function reads log file, process it and stores it in time, user and sonplays table
+    
+    Args: 
+        cur (psycopg2.cursor): Allows execution of SLQ queries with python.
+        filepath (string): Path of log_file
+    """
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -62,6 +76,16 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """ Read the file path of all file in a folder and pass those path to function that use 
+    it to process data in the path.
+    
+    Args: 
+        cur (psycopg2.cursor): Allows execution of SLQ queries with python.
+        conn (pysopg2.connection): Allows connection to 
+        filepath (string): Path to folder containing files
+        func (Function): Function use to process file
+    """
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
